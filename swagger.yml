@@ -1,0 +1,92 @@
+openapi: 3.0.1
+info:
+  title: API defaul consultorio
+  description: API de controle de medicos e seus consultorios.
+  version: 1.0.0
+  termsOfService: http://mockapi.io
+  contact:
+    name: Suport on docs
+    email: contact@gmail.com
+    url: https://mockapi.io
+  license:
+    name: "Shape"
+    url: https://mockshape
+externalDocs: 
+  description: documentation
+  url: https://mockapi.io
+servers: 
+- url: https://6265dbe3dbee37aff9a94355.mockapi.io/
+  description: specialities
+paths:
+  /specialities:
+    get:
+      summary: Recupera todas as especialidades
+      responses:
+        200:
+          $ref: "#/components/responses/ListSpecialitiesOk"  
+# Cada chave do mapa é um tipo de mídia que será enviado como o cabeçalho Content-Type. Em nosso exemplo, como a API só suporta JSON,informamos apenas application/json.
+      security: 
+      - auth: []
+    post:
+      summary: Cria nova especialidade
+      requestBody:
+        $ref: "#/components/requestBodies/Specialities"
+      responses:
+        201:
+          $ref: "#/components/responses/Created"
+  /specialities/{speciality_id}:
+    parameters: 
+    - name: speciality_id
+# in path quando o parâmetro é envidado direto no especialidade_id.
+      in: path
+      schema:
+        type: integer
+      required: true
+    get:
+      summary: Recupera uma entidade pelo ID
+      responses:
+        200:
+          $ref: "#/components/responses/ListSpecialitiesOk"
+        404:   
+          $ref: "#/components/responses/NotFound"
+components:
+  schemas:
+    Specialities:
+      type: object
+      properties:
+        Id:
+          type: integer
+        descricao:
+          type: string
+  responses:
+    ListSpecialitiesOk:
+      description: Sucessossssssss
+      content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Specialities"
+    Created:
+      description: "Created"
+      content:
+        applicatin/json:
+          schema:
+            $ref: "#/components/schemas/Specialities"
+    NotFound:
+      description: Especialidade não encontrada
+      content:
+        application/json:
+          example: "Not Found"
+  requestBodies:
+    Specialities:
+      content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                descricao:
+                  type: string
+  securitySchemes:
+    auth:
+      type: http
+      scheme: bearer
+      
